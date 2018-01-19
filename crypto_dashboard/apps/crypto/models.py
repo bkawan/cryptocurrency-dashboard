@@ -21,7 +21,7 @@ class CryptoCurrency(models.Model):
     balance = models.FloatField()
 
     def __str__(self):
-        return "{}-{}-{}".format(self.bot, self.CURRENCY_CHOICES, self.created_at)
+        return "{}-{}-{}".format(self.bot, self.currency, self.created_at)
 
 
 class LastTrade(models.Model):

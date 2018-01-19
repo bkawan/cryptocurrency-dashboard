@@ -104,3 +104,4 @@ ENV/
 .idea/
 
 crypto_dashboard/db.sqlite3
+.DS_Store
