@@ -99,3 +99,8 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+
+.idea/
+
+crypto_dashboard/db.sqlite3
