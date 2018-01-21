@@ -106,3 +106,5 @@ ENV/
 crypto_dashboard/db.sqlite3
 .DS_Store
 db.sqlite3
+
+requirements-files/

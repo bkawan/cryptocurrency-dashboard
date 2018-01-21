@@ -15,10 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from django.urls import include
 
 from apps.crypto.views import DashboardView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', DashboardView.as_view(), name='landing_page'),
+    url(r'^api/', include('apps.crypto.api.urls')),
 ]
