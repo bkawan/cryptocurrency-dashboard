@@ -5,4 +5,5 @@ whitenoise
 psycopg2
 djangorestframework
 django-filter
+python-dateutil
 
