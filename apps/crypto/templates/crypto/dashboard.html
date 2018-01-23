@@ -53,177 +53,172 @@
             </div>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
-            integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
-            integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
-            crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
-            integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
-            crossorigin="anonymous"></script>
+</div>
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
+        integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
+        integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
+        integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+        crossorigin="anonymous"></script>
 
-    <!-- Include Required Prerequisites -->
-    <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <!-- Include Date Range Picker -->
-    <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
-    <script src="https://unpkg.com/vue/dist/vue.js"></script>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<!-- Include Required Prerequisites -->
+<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<!-- Include Date Range Picker -->
+<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="/src/vue-daterangepicker-component.min.js"></script>
 
 
-    <script>
-        $(function () {
+<script>
+    $(function () {
 
-            var start = moment().subtract(29, 'days');
-            var end = moment();
+        var start = moment().subtract(29, 'days');
+        var end = moment();
 
-            function cb(start, end) {
-                $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        function cb(start, end) {
+            $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        }
+
+        $('#reportrange').daterangepicker({
+            startDate: start,
+            endDate: end,
+            ranges: {
+                'Today': [moment(), moment()],
+                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
             }
+        }, cb);
 
-            $('#reportrange').daterangepicker({
-                startDate: start,
-                endDate: end,
-                ranges: {
-                    'Today': [moment(), moment()],
-                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                    'This Month': [moment().startOf('month'), moment().endOf('month')],
-                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-                }
-            }, cb);
+        cb(start, end);
 
-            cb(start, end);
+    });
+    var app = new Vue({
+        el: '#app',
+        delimiters: ["[[", "]]"],
+        data() {
+            return {
+                hello: "hello",
+                {#                    cryptoCurrencyOptions: {#}
+                {#                        xrp: {#}
+                {#                            x: [],#}
+                {#                            y: [],#}
+                {#                            type: 'scatter'#}
+                {#                        },#}
+                {#                        btc: {#}
+                {#                            x: [],#}
+                {#                            y: [],#}
+                {#                            type: 'scatter'#}
+                {#                        },#}
+                {#                        ltc: {#}
+                {#                            x: [],#}
+                {#                            y: [],#}
+                {#                            type: 'scatter'#}
+                {#                        },#}
+                {#                    },#}
 
-        });
-        var app = new Vue({
-            el: '#app',
-            delimiters: ["[[", "]]"],
-            data() {
-                return {
-                    hello: "hello",
-                    {#                    cryptoCurrencyOptions: {#}
-                    {#                        xrp: {#}
-                    {#                            x: [],#}
-                    {#                            y: [],#}
-                    {#                            type: 'scatter'#}
-                    {#                        },#}
-                    {#                        btc: {#}
-                    {#                            x: [],#}
-                    {#                            y: [],#}
-                    {#                            type: 'scatter'#}
-                    {#                        },#}
-                    {#                        ltc: {#}
-                    {#                            x: [],#}
-                    {#                            y: [],#}
-                    {#                            type: 'scatter'#}
-                    {#                        },#}
-                    {#                    },#}
-
-                    bot: {
-                        selected: 'BOT1',
-                        options: [
-                            {text: 'BOT1', value: 'BOT1'},
-                            {text: 'BOT2', value: 'BOT2'},
-                            {text: 'BOT3', value: 'BOT3'},
-                        ]
-                    },
-                    cryptoCurrencies: ''
-
-                }
-            },
-            methods: {
-                drawTimeAndSeriesChart() {
-                    this.filterCryptoCurrencies();
+                bot: {
+                    selected: 'BOT1',
+                    options: [
+                        {text: 'BOT1', value: 'BOT1'},
+                        {text: 'BOT2', value: 'BOT2'},
+                        {text: 'BOT3', value: 'BOT3'},
+                    ]
                 },
-                filterCryptoCurrencies() {
+                cryptoCurrencies: ''
 
-                    let url = '/api/crypto-currencies/';
-                    axios.get(url, {
-                        params: {
-                            bot: this.bot.selected
-                        }
-                    })
-                        .then(response => {
-                                // JSON responses are automatically parsed.
-                                let cryptoCurrencyOptions = {
-                                    xrp: {
-                                        x: [],
-                                        y: [],
-                                        type: 'scatter'
-                                    },
-                                    btc: {
-                                        x: [],
-                                        y: [],
-                                        type: 'scatter'
-                                    },
-                                    ltc: {
-                                        x: [],
-                                        y: [],
-                                        type: 'scatter'
-                                    },
-                                };
-                                results = response.data;
-                                console.log(results);
-                                for (let i = 0; i < results.length; i++) {
-                                    let currency = results[i]['currency'].toString().toLowerCase();
-                                    let create_at = results[i]['created_at'];
-                                    let profit = results[i]['profit'];
-                                    cryptoCurrencyOptions[currency].x.push(create_at);
-                                    cryptoCurrencyOptions[currency].y.push(profit);
-                                }
-
-                                data = [cryptoCurrencyOptions.xrp, cryptoCurrencyOptions.btc, cryptoCurrencyOptions.ltc];
-                                console.log(cryptoCurrencyOptions);
-                                Plotly.newPlot('lineChartDiv', data);
-
-                            }
-                        )
-                        .catch(e => {
-                            console.log(e)
-                        })
-
-                }
+            }
+        },
+        methods: {
+            drawTimeAndSeriesChart() {
+                this.filterCryptoCurrencies();
             },
+            filterCryptoCurrencies() {
 
-            created() {
+                {#                let start = document.querySelector("input[name=daterangepicker_start]").value;#}
+                {#                let end = document.querySelector("input[name=daterangepicker_end]").value;#}
+                {#                start = moment(start).format('YYYY-MM-DD');#}
+                {#                end = moment(start).format('YYYY-MM-DD');#}
+                let url = '/api/crypto-currencies/';
+                {#                url = '/api/crypt-currencies/?bot=' + this.bot.selected + "&created_at_0" + start + "&created_at_1=" + end#}
+                axios.get(url, {
+                    params: {
+                        bot: this.bot.selected,
+                        created_at_0: "2001-1-1",
+                        created_at_1: "2018-12-10",
+                    }
+                })
+                    .then(response => {
+                            // JSON responses are automatically parsed.
+                            let cryptoCurrencyOptions = {
+                                xrp: {
+                                    x: [],
+                                    y: [],
+                                    type: 'scatter',
+                                    name: 'XRP'
 
-                this.drawTimeAndSeriesChart()
+                                },
+                                btc: {
+                                    x: [],
+                                    y: [],
+                                    type: 'scatter',
+                                    name: "BTC"
+                                },
+                                ltc: {
+                                    x: [],
+                                    y: [],
+                                    type: 'scatter',
+                                    name: "LTC"
+                                },
+                            };
+                            results = response.data;
+                            console.log(results);
+                            for (let i = 0; i < results.length; i++) {
+                                let currency = results[i]['currency'].toString().toLowerCase();
+                                let create_at = results[i]['created_at'];
+                                let profit = results[i]['profit'];
+                                cryptoCurrencyOptions[currency].x.push(create_at);
+                                cryptoCurrencyOptions[currency].y.push(profit);
+                            }
+
+                            data = [cryptoCurrencyOptions.xrp, cryptoCurrencyOptions.btc, cryptoCurrencyOptions.ltc];
+                            var layout = {
+                                title: 'Profit Vs Time of Crypto Currencies of ' + this.bot.selected,
+                                xaxis: {
+                                    title: 'Time',
+                                    showgrid: false,
+                                    zeroline: false
+                                },
+                                yaxis: {
+                                    title: 'Profit in % ',
+                                    showline: false
+                                }
+                            };
+                            Plotly.newPlot('lineChartDiv', data, layout);
+
+                        }
+                    )
+                    .catch(e => {
+                        console.log(e)
+                    })
+
             }
-        })
-    </script>
-    <script type="text/javascript">
-        $(function () {
+        },
 
-            var start = moment().subtract(29, 'days');
-            var end = moment();
+        created() {
 
-            function cb(start, end) {
-                $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-            }
-
-            $('#reportrange').daterangepicker({
-                startDate: start,
-                endDate: end,
-                ranges: {
-                    'Today': [moment(), moment()],
-                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                    'This Month': [moment().startOf('month'), moment().endOf('month')],
-                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-                }
-            }, cb);
-
-            cb(start, end);
-
-        });
-    </script>
-    <script>
+            this.drawTimeAndSeriesChart()
+        }
+    })
+</script>
 
 
-    </script>
 </body>
 </html>
