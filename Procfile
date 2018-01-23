@@ -1,0 +1,1 @@
+web: gunicorn crypto_dashboard.wsgi --log-file -

@@ -1,0 +1,8 @@
+django
+gunicorn
+dj-database-url
+whitenoise
+psycopg2
+djangorestframework
+django-filter
+
