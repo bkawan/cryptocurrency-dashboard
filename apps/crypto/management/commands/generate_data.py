@@ -24,5 +24,6 @@ class Command(BaseCommand):
                         balance=random.uniform(0, 10000)
 
                     )
+                    _last_date = created_at
 
         print('Created Successfully')

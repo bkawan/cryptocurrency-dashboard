@@ -16,7 +16,7 @@ BOT_CHOICES = (
 class CryptoCurrency(models.Model):
     currency = models.CharField(choices=CURRENCY_CHOICES, max_length=10)
     bot = models.CharField(choices=BOT_CHOICES, max_length=10)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField()
     profit = models.FloatField()
     balance = models.FloatField()
 
