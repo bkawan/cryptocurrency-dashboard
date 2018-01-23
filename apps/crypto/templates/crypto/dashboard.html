@@ -49,6 +49,21 @@
                     <div id="lineChartDiv">
                     </div>
                 </div>
+                <div class="col-md-12">
+
+                    <div class="col-md-6 p-0 m-0">
+                        <h1 class="p-0 m-0">BOT1</h1>
+                        <div id="barChartBot1" class="p-0 m-0"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <h1 class="p-0 m-0">BOT2</h1>
+                        <div id="barChartBot2"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <h1 class="p-0 m-0">BOT3</h1>
+                        <div id="barChartBot3"></div>
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -71,7 +86,6 @@
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script src="/src/vue-daterangepicker-component.min.js"></script>
 
 
 <script>
@@ -157,38 +171,83 @@
                 })
                     .then(response => {
                             // JSON responses are automatically parsed.
+                            let sum = {
+                                bot1: {
+                                    xrp: 121,
+                                    btc: 2121,
+                                    ltc: 999,
+                                },
+                                bot2: {
+                                    xrp: 121,
+                                    btc: 121,
+                                    ltc: 333,
+                                },
+                                bot3: {
+                                    xrp: 21,
+                                    btc: 44,
+                                    ltc: 55,
+                                }
+                            };
                             let cryptoCurrencyOptions = {
-                                xrp: {
-                                    x: [],
-                                    y: [],
-                                    type: 'scatter',
-                                    name: 'XRP'
+                                lineChart: {
+                                    xrp: {
+                                        x: [],
+                                        y: [],
+                                        type: 'scatter',
+                                        name: 'XRP',
 
+                                    },
+                                    btc: {
+                                        x: [],
+                                        y: [],
+                                        type: 'scatter',
+                                        name: "BTC",
+                                        totalBalance: ''
+                                    },
+                                    ltc: {
+                                        x: [],
+                                        y: [],
+                                        type: 'scatter',
+                                        name: "LTC",
+
+                                    },
                                 },
-                                btc: {
-                                    x: [],
-                                    y: [],
-                                    type: 'scatter',
-                                    name: "BTC"
-                                },
-                                ltc: {
-                                    x: [],
-                                    y: [],
-                                    type: 'scatter',
-                                    name: "LTC"
+                                barChart: {
+                                    bot1: [{
+                                        type: 'bar',
+                                        x: [sum.bot1.xrp, sum.bot1.btc, sum.bot1.ltc],
+                                        y: ['XRP', 'BTC', 'LTC'],
+                                        orientation: 'h'
+                                    }],
+                                    bot2: [{
+                                        type: 'bar',
+                                        x: [sum.bot2.xrp, sum.bot2.btc, sum.bot2.ltc],
+                                        y: ['XRP', 'BTC', 'LTC'],
+                                        orientation: 'h'
+                                    }],
+                                    bot3: [{
+                                        type: 'bar',
+                                        x: [sum.bot3.xrp, sum.bot3.btc, sum.bot3.ltc],
+                                        y: ['XRP', 'BTC', 'LTC'],
+                                        orientation: 'h'
+                                    }],
+
                                 },
                             };
                             results = response.data;
-                            console.log(results);
+
                             for (let i = 0; i < results.length; i++) {
                                 let currency = results[i]['currency'].toString().toLowerCase();
+                                let bot = results[i]['bot'].toString().toLowerCase();
                                 let create_at = results[i]['created_at'];
                                 let profit = results[i]['profit'];
-                                cryptoCurrencyOptions[currency].x.push(create_at);
-                                cryptoCurrencyOptions[currency].y.push(profit);
+
+                                cryptoCurrencyOptions.lineChart[currency].x.push(create_at);
+                                cryptoCurrencyOptions.lineChart[currency].y.push(profit);
+                                sum[bot][currency] += results[i][profit]
                             }
 
-                            data = [cryptoCurrencyOptions.xrp, cryptoCurrencyOptions.btc, cryptoCurrencyOptions.ltc];
+                            data = [cryptoCurrencyOptions.lineChart.xrp, cryptoCurrencyOptions.lineChart.btc, cryptoCurrencyOptions.lineChart.ltc];
                             var layout = {
                                 title: 'Profit Vs Time of Crypto Currencies of ' + this.bot.selected,
                                 xaxis: {
@@ -202,6 +261,9 @@
                                 }
                             };
                             Plotly.newPlot('lineChartDiv', data, layout);
+                            Plotly.newPlot('barChartBot1', cryptoCurrencyOptions.barChart.bot1);
+                            Plotly.newPlot('barChartBot2', cryptoCurrencyOptions.barChart.bot2);
+                            Plotly.newPlot('barChartBot3', cryptoCurrencyOptions.barChart.bot3);
 
                         }
                     )
