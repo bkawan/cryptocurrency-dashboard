@@ -125,4 +125,10 @@ REST_FRAMEWORK = {
 
 }
 STATIC_URL = '/static/'
-from .env import *
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+# by default the is a folder saticfiles  created by django, you can create another folder too manually
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
