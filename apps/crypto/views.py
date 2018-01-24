@@ -13,7 +13,7 @@ class DashboardView(TemplateView):
         ctx = super().get_context_data(**kwargs)
 
         ctx['last_trades'] = mark_safe(list(LastTrade.objects.all().order_by('-id')
-                                            .annotate(year=ExtractHour('date'),
+                                            .annotate(year=ExtractYear('date'),
                                                       month=ExtractMonth('date'),
                                                       day=ExtractDay('date'),
                                                       hour=ExtractHour('date'),
