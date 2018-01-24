@@ -62,7 +62,7 @@
                                     Top Ten Trades
                                 </div>
                                 <div class="card-block p-0 m-0 small">
-                                    <table class="table table-responsive table-bordered table-hover">
+                                    <table class="table  table-bordered table-hover">
                                         <thead>
                                         <tr class="small">
                                             <th>Info</th>
@@ -74,11 +74,16 @@
                                         </thead>
                                         <tbody>
                                         <tr class="small" v-for="last_trade in lastTrades">
-                                            <td>[[ last_trade.info ]]</td>
+                                            <td v-if="last_trade.info='buy'" class="bg-danger p-1 text-center">[[
+                                                last_trade.info ]]
+                                            </td>
+                                            <td v-else class="bg-success p-1 text-center">[[ last_trade.info ]]</td>
                                             <td>[[ last_trade.quantity ]]</td>
                                             <td>[[ last_trade.value ]]</td>
                                             <td>[[ last_trade.volume ]]</td>
-                                            <td>[[ last_trade.date ]]</td>
+                                            <td>[[ last_trade.year]]/[[last_trade.month]]/[[last_trade.day]]
+                                                [[last_trade.hour]]:[[last_trade.minute]]:[[last_trade.second]]
+                                            </td>
                                         </tr>
                                         </tbody>
                                     </table>
