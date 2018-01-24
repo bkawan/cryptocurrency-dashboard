@@ -51,18 +51,52 @@
                 </div>
                 <div class="col-md-12">
 
-                    <div class="col-md-6 p-0 m-0">
-                        <h1 class="p-0 m-0">BOT1</h1>
-                        <div id="barChartBot1" class="p-0 m-0"></div>
+                    <div class="row">
+                        <div class="col-md-6 p-0 m-0">
+                            <h1 class="p-0 m-0">BOT1</h1>
+                            <div id="barChartBot1" class="p-0 m-0"></div>
+                        </div>
+                        <div class="col-md-6 p-0 m-0">
+                            <div class="card p-0 m-0">
+                                <div class="card-header">
+                                    Top Ten Trades
+                                </div>
+                                <div class="card-block p-0 m-0 small">
+                                    <table class="table table-responsive table-bordered table-hover">
+                                        <thead>
+                                        <tr class="small">
+                                            <th>Info</th>
+                                            <th>Quantity</th>
+                                            <th>Value</th>
+                                            <th>Volume</th>
+                                            <th>Date</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr class="small" v-for="last_trade in lastTrades">
+                                            <td>[[ last_trade.info ]]</td>
+                                            <td>[[ last_trade.quantity ]]</td>
+                                            <td>[[ last_trade.value ]]</td>
+                                            <td>[[ last_trade.volume ]]</td>
+                                            <td>[[ last_trade.date ]]</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <h1 class="p-0 m-0">BOT2</h1>
-                        <div id="barChartBot2"></div>
+                    <div class="col-md-12">
+                        <div class="col-md-6">
+                            <h1 class="p-0 m-0">BOT2</h1>
+                            <div id="barChartBot2"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <h1 class="p-0 m-0">BOT3</h1>
+                            <div id="barChartBot3"></div>
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <h1 class="p-0 m-0">BOT3</h1>
-                        <div id="barChartBot3"></div>
-                    </div>
+
                 </div>
 
             </div>
@@ -146,6 +180,7 @@
                         {text: 'BOT3', value: 'BOT3'},
                     ]
                 },
+                lastTrades:{{ last_trades }},
                 cryptoCurrencies: ''
 
             }

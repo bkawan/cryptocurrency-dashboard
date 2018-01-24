@@ -12,3 +12,7 @@ class CryptoCurrencyFilter(FilterSet):
         fields = ['bot',
                   'created_at',
                   ]
+
+
+
+

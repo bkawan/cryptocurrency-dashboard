@@ -24,3 +24,8 @@ class CryptoCurrencyViewSet(ReadOnlyModelViewSet):
         #     end_date = parse(end_date).date()
         #     qs = qs.filter(created_at__range=(start_date, end_date))
         # return qs
+
+    def list(self, request, *args, **kwargs):
+        response = super().list(request, args, kwargs)
+        # Add data to response.data Example for your object:
+        return response
