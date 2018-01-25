@@ -6,6 +6,20 @@
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
           integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <style>
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: .1;
+        }
+
+
+    </style>
 </head>
 <body>
 <div class="container">
@@ -16,54 +30,46 @@
                 <div class="row">
                     <div class="col-md-6"></div>
                     <div class="col-md-4 p-0 m-0">
-                        <div class="card p-0 m-0">
+                        <div class="card">
                             <div class="card-header">
-                                <div id=""
-                                     @click="showDatePicker = !showDatePicker"
-                                     class="pull-right"
-                                     style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
-                                    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
-                                    <span>[[startDate|humanDate]] - [[endDate|humanDate]]</span> <b class="caret"></b>
-                                </div>
-                            </div>
-                            <div class="card-block p-0 m-0" v-if="showDatePicker">
-                                <div id="date-ranges">
-                                    <ul class="list-group">
-                                        <li v-for="v,k in ranges"
-                                            :range-key="k"
-                                            @click="filterCryptoCurrencies(v,$event)"
-                                            class="list-group-item p-2">
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button"
+                                            id="dropdownMenuButton"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        [[startDate|humanDate]] - [[endDate|humanDate]]
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a v-for="v,k in ranges"
+                                           :range-key="k"
+                                           @click="filterCryptoCurrencies(v,$event)"
+                                           class="dropdown-item"
+                                           href="#">
                                             [[k]]
-                                        </li>
-                                        <li class="list-group-item p-2"
-                                            @click="showDateRangeInput = !showDateRangeInput">
-                                            Custom Date Range
-                                        </li>
-                                        <li class="list-group-item p-2" v-if="showDateRangeInput">
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    From :
-                                                </div>
-                                                <div class="col-md-8 w-100">
-                                                    <input type="text" v-model="startDate"
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <div class="dropdown-item">
+                                            <div class="py-2">Custom Date Range</div>
+                                            <div class="form-group row">
+                                                <label for="example-text-input"
+                                                       class="col-2 col-form-label">From</label>
+                                                <div class="col-10">
+                                                    <input class="form-control" type="date" v-model="startDate"
                                                            @change="filterCryptoCurrencies">
-                                                </div>
-                                                <div class="col-md-4">
-                                                    To :
-                                                </div>
-                                                <div class="col-md-8">
-                                                    <input type="text" v-model="endDate"
-                                                           @change="filterCryptoCurrencies">
-
                                                 </div>
                                             </div>
-                                        </li>
-
-                                    </ul>
+                                            <div class="form-group row">
+                                                <label for="example-text-input"
+                                                       class="col-2 col-form-label">To</label>
+                                                <div class="col-10">
+                                                    <input class="form-control" type="date" v-model="endDate"
+                                                           @change="filterCryptoCurrencies">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                     <div class="col-md-2 p-0 m-0">
                         <div class="card">
@@ -164,7 +170,7 @@
 <script>
 
     Vue.filter('humanDate', function (value) {
-        return moment(value).format('MMM Do YYY')
+        return moment(value).format('MMM Do YYYY')
     });
     Vue.filter('getFirstFromList', function (value) {
         return value[0]
