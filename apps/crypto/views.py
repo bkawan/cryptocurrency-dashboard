@@ -1,9 +1,12 @@
 # Create your views here.
+from collections import defaultdict
+
+from django.db.models import Sum
 from django.db.models.functions import *
 from django.utils.html import mark_safe
 from django.views.generic import TemplateView
 
-from apps.crypto.models import LastTrade
+from apps.crypto.models import LastTrade, CryptoCurrency
 
 
 class DashboardView(TemplateView):
@@ -33,4 +36,12 @@ class DashboardView(TemplateView):
                                                     'second',
 
                                                     ))[:10])
+
+        _sums = CryptoCurrency.objects.values('bot', 'currency').annotate(Sum('balance')).order_by('bot')
+        sums = {}
+
+        for x in _sums:
+            sums.setdefault(x['bot'].lower(), {}).update({x['currency'].lower():x['balance__sum']})
+
+        ctx['sums'] = mark_safe(sums)
         return ctx

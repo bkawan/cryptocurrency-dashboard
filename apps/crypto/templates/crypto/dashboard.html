@@ -169,6 +169,7 @@
 
 <script>
 
+
     Vue.filter('humanDate', function (value) {
         return moment(value).format('MMM Do YYYY')
     });
@@ -177,7 +178,8 @@
     });
     Vue.filter('queryDate', function (value) {
         return moment(value).format('YYYY-MM-DD')
-    })
+    });
+
 
     var app = new Vue({
         el: '#app',
@@ -207,6 +209,7 @@
                 cryptoCurrencies: '',
                 showDatePicker: false,
                 showDateRangeInput: false,
+                sum:{{ sums }}
 
             }
         },
@@ -233,23 +236,7 @@
                 })
                     .then(response => {
                             // JSON responses are automatically parsed.
-                            let sum = {
-                                bot1: {
-                                    xrp: 121,
-                                    btc: 2121,
-                                    ltc: 999,
-                                },
-                                bot2: {
-                                    xrp: 121,
-                                    btc: 121,
-                                    ltc: 333,
-                                },
-                                bot3: {
-                                    xrp: 21,
-                                    btc: 44,
-                                    ltc: 55,
-                                }
-                            };
+
                             let cryptoCurrencyOptions = {
                                 lineChart: {
                                     xrp: {
@@ -277,19 +264,19 @@
                                 barChart: {
                                     bot1: [{
                                         type: 'bar',
-                                        x: [sum.bot1.xrp, sum.bot1.btc, sum.bot1.ltc],
+                                        x: [this.sum.bot1.xrp, this.sum.bot1.btc, this.sum.bot1.ltc],
                                         y: ['XRP', 'BTC', 'LTC'],
                                         orientation: 'h'
                                     }],
                                     bot2: [{
                                         type: 'bar',
-                                        x: [sum.bot2.xrp, sum.bot2.btc, sum.bot2.ltc],
+                                        x: [this.sum.bot2.xrp, this.sum.bot2.btc, this.sum.bot2.ltc],
                                         y: ['XRP', 'BTC', 'LTC'],
                                         orientation: 'h'
                                     }],
                                     bot3: [{
                                         type: 'bar',
-                                        x: [sum.bot3.xrp, sum.bot3.btc, sum.bot3.ltc],
+                                        x: [this.sum.bot3.xrp, this.sum.bot3.btc, this.sum.bot3.ltc],
                                         y: ['XRP', 'BTC', 'LTC'],
                                         orientation: 'h'
                                     }],
@@ -297,18 +284,14 @@
                                 },
                             };
                             results = response.data;
-
                             for (let i = 0; i < results.length; i++) {
-                                let currency = results[i]['currency'].toString().toLowerCase();
+                                let currency = results[i]['currency'].toString().toLowerCase().toString();
                                 let bot = results[i]['bot'].toString().toLowerCase();
                                 let create_at = results[i]['created_at'];
                                 let profit = results[i]['profit'];
-
                                 cryptoCurrencyOptions.lineChart[currency].x.push(create_at);
                                 cryptoCurrencyOptions.lineChart[currency].y.push(profit);
-                                sum[bot][currency] += results[i][profit]
                             }
-
                             data = [cryptoCurrencyOptions.lineChart.xrp, cryptoCurrencyOptions.lineChart.btc, cryptoCurrencyOptions.lineChart.ltc];
                             var layout = {
                                 title: 'Profit Vs Time of Crypto Currencies of ' + this.bot.selected,
