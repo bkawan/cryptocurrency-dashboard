@@ -6,24 +6,10 @@
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
           integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-    <style>
-        .grid-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 10000;
-            pointer-events: none;
-            opacity: .1;
-        }
-
-
-    </style>
 </head>
 <body>
-<div class="container">
-    <h1 class="bg-inverse p-3 mt-0 text-center text-white">Crypto Currency Dashboard</h1>
+<h1 class="bg-inverse p-3 mt-0 text-center text-white">Crypto Currency Dashboard</h1>
+<div class="container p-1">
     <div id="app" class="p-3">
         <div class="row">
             <div class="col-md-12">
@@ -90,61 +76,68 @@
                     <div id="lineChartDiv">
                     </div>
                 </div>
-                <div class="col-md-12">
-
-                    <div class="row">
-                        <div class="col-md-6 p-0 m-0">
-                            <h1 class="p-0 m-0">BOT1</h1>
-                            <div id="barChartBot1" class="p-0 m-0"></div>
-                        </div>
-                        <div class="col-md-6 p-0 m-0">
-                            <div class="card p-0 m-0">
-                                <div class="card-header">
-                                    Top Ten Trades
-                                </div>
-                                <div class="card-block p-0 m-0 small">
-                                    <table class="table  table-bordered table-hover">
-                                        <thead>
-                                        <tr class="small">
-                                            <th>Info</th>
-                                            <th>Quantity</th>
-                                            <th>Value</th>
-                                            <th>Volume</th>
-                                            <th>Date</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr class="small" v-for="last_trade in lastTrades">
-                                            <td v-if="last_trade.info=='buy'" class="bg-danger p-1 text-center">[[
-                                                last_trade.info ]]
-                                            </td>
-                                            <td v-else class="bg-success p-1 text-center">[[ last_trade.info ]]</td>
-                                            <td>[[ last_trade.quantity ]]</td>
-                                            <td>[[ last_trade.value ]]</td>
-                                            <td>[[ last_trade.volume ]]</td>
-                                            <td>[[ last_trade.year]]/[[last_trade.month]]/[[last_trade.day]]
-                                                [[last_trade.hour]]:[[last_trade.minute]]:[[last_trade.second]]
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="col-md-6">
-                            <h1 class="p-0 m-0">BOT2</h1>
-                            <div id="barChartBot2"></div>
-                        </div>
-                        <div class="col-md-6">
-                            <h1 class="p-0 m-0">BOT3</h1>
-                            <div id="barChartBot3"></div>
-                        </div>
-                    </div>
-
+            </div>
+        </div>
+        <br>
+        <div class="card-group">
+            <div class="card">
+                <div class="card-header">
+                    BOT1
                 </div>
-
+                <div class="card-block">
+                    <div id="barChartBot1" class="p-0 m-0"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    Top Ten Trades
+                </div>
+                <div class="card-block p-0 m-0 small">
+                    <table class="table  table-bordered table-hover">
+                        <thead>
+                        <tr class="small">
+                            <th>Info</th>
+                            <th>Quantity</th>
+                            <th>Value</th>
+                            <th>Volume</th>
+                            <th>Date</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="small" v-for="last_trade in lastTrades">
+                            <td v-if="last_trade.info=='buy'" class="bg-danger p-1 text-center">[[
+                                last_trade.info ]]
+                            </td>
+                            <td v-else class="bg-success p-1 text-center">[[ last_trade.info ]]</td>
+                            <td>[[ last_trade.quantity ]]</td>
+                            <td>[[ last_trade.value ]]</td>
+                            <td>[[ last_trade.volume ]]</td>
+                            <td>[[ last_trade.year]]/[[last_trade.month]]/[[last_trade.day]]
+                                [[last_trade.hour]]:[[last_trade.minute]]:[[last_trade.second]]
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="card-group">
+            <div class="card">
+                <div class="card-header">
+                    BOT2
+                </div>
+                <div class="card-block">
+                    <div id="barChartBot2" class="p-0 m-0"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    BOT3
+                </div>
+                <div class="card-block">
+                    <div id="barChartBot3" class="p-0 m-0"></div>
+                </div>
             </div>
         </div>
     </div>
