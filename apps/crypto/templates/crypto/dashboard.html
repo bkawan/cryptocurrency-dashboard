@@ -6,9 +6,6 @@
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
           integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-
-    <link rel="stylesheet" type="text/css"
-          href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css"/>
 </head>
 <body>
 <div class="container">
@@ -19,12 +16,50 @@
                 <div class="row">
                     <div class="col-md-6"></div>
                     <div class="col-md-4 p-0 m-0">
-                        <div class="card">
+                        <div class="card p-0 m-0">
                             <div class="card-header">
-                                <div id="reportrange" class="pull-right"
+                                <div id=""
+                                     @click="showDatePicker = !showDatePicker"
+                                     class="pull-right"
                                      style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
                                     <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
-                                    <span></span> <b class="caret"></b>
+                                    <span>[[startDate|humanDate]] - [[endDate|humanDate]]</span> <b class="caret"></b>
+                                </div>
+                            </div>
+                            <div class="card-block p-0 m-0" v-if="showDatePicker">
+                                <div id="date-ranges">
+                                    <ul class="list-group">
+                                        <li v-for="v,k in ranges"
+                                            :range-key="k"
+                                            @click="filterCryptoCurrencies(v,$event)"
+                                            class="list-group-item p-2">
+                                            [[k]]
+                                        </li>
+                                        <li class="list-group-item p-2"
+                                            @click="showDateRangeInput = !showDateRangeInput">
+                                            Custom Date Range
+                                        </li>
+                                        <li class="list-group-item p-2" v-if="showDateRangeInput">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    From :
+                                                </div>
+                                                <div class="col-md-8 w-100">
+                                                    <input type="text" v-model="startDate"
+                                                           @change="filterCryptoCurrencies">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    To :
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <input type="text" v-model="endDate"
+                                                           @change="filterCryptoCurrencies">
+
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -121,61 +156,36 @@
 <!-- Include Required Prerequisites -->
 <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <!-- Include Date Range Picker -->
-<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 
 <script>
-    $(function () {
 
-        var start = moment().subtract(29, 'days');
-        var end = moment();
-
-        function cb(start, end) {
-            $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-        }
-
-        $('#reportrange').daterangepicker({
-            startDate: start,
-            endDate: end,
-            ranges: {
-                'Today': [moment(), moment()],
-                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                'This Month': [moment().startOf('month'), moment().endOf('month')],
-                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-            }
-        }, cb);
-
-        cb(start, end);
-
+    Vue.filter('humanDate', function (value) {
+        return moment(value).format('MMM Do YYY')
     });
+    Vue.filter('getFirstFromList', function (value) {
+        return value[0]
+    });
+    Vue.filter('queryDate', function (value) {
+        return moment(value).format('YYYY-MM-DD')
+    })
+
     var app = new Vue({
         el: '#app',
         delimiters: ["[[", "]]"],
         data() {
             return {
-                hello: "hello",
-                {#                    cryptoCurrencyOptions: {#}
-                {#                        xrp: {#}
-                {#                            x: [],#}
-                {#                            y: [],#}
-                {#                            type: 'scatter'#}
-                {#                        },#}
-                {#                        btc: {#}
-                {#                            x: [],#}
-                {#                            y: [],#}
-                {#                            type: 'scatter'#}
-                {#                        },#}
-                {#                        ltc: {#}
-                {#                            x: [],#}
-                {#                            y: [],#}
-                {#                            type: 'scatter'#}
-                {#                        },#}
-                {#                    },#}
+                ranges: {
+                    'Today': [moment(), moment()],
+                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                },
 
                 bot: {
                     selected: 'BOT1',
@@ -185,8 +195,12 @@
                         {text: 'BOT3', value: 'BOT3'},
                     ]
                 },
+                startDate: moment().subtract(1, 'days').format("YYYY-MM-DD"),
+                endDate: moment().subtract(1, 'days').format("YYYY-MM-DD"),
                 lastTrades:{{ last_trades }},
-                cryptoCurrencies: ''
+                cryptoCurrencies: '',
+                showDatePicker: false,
+                showDateRangeInput: false,
 
             }
         },
@@ -194,19 +208,21 @@
             drawTimeAndSeriesChart() {
                 this.filterCryptoCurrencies();
             },
-            filterCryptoCurrencies() {
+            filterCryptoCurrencies(daterange, event) {
+                if (event) {
+                    if (daterange) {
+                        this.startDate = moment(daterange[0]).format('YYYY-MM-DD');
+                        this.endDate = moment(daterange[1]).format('YYYY-MM-DD');
+                    }
+                }
 
-                {#                let start = document.querySelector("input[name=daterangepicker_start]").value;#}
-                {#                let end = document.querySelector("input[name=daterangepicker_end]").value;#}
-                {#                start = moment(start).format('YYYY-MM-DD');#}
-                {#                end = moment(start).format('YYYY-MM-DD');#}
                 let url = '/api/crypto-currencies/';
                 {#                url = '/api/crypt-currencies/?bot=' + this.bot.selected + "&created_at_0" + start + "&created_at_1=" + end#}
                 axios.get(url, {
                     params: {
                         bot: this.bot.selected,
-                        created_at_0: "2001-1-1",
-                        created_at_1: "2018-12-10",
+                        created_at_0: moment(this.startDate).format("YYYY-MM-DD"),
+                        created_at_1: moment(this.endDate).format("YYYY-MM-DD"),
                     }
                 })
                     .then(response => {
