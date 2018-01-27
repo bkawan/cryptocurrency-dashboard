@@ -110,4 +110,5 @@ db.sqlite3
 
 requirements-files/
 
-crypto_dashboard/settings/env.py
+#crypto_dashboard/settings/env.py
+
