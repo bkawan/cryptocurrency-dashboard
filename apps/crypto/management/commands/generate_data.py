@@ -14,7 +14,7 @@ class Command(BaseCommand):
         CryptoCurrency.objects.all().delete()
         LastTrade.objects.all().delete()
         for i in range(400):
-            created_at = _last_date - datetime.timedelta(days=1)
+            created_at = _last_date - datetime.timedelta(hours=1)
             for bot in bots:
                 for currency in currencies:
                     CryptoCurrency.objects.create(
@@ -27,7 +27,7 @@ class Command(BaseCommand):
                     )
             _last_date = created_at
 
-        _last_date = datetime.datetime.now() + datetime.timedelta(days=1)
+        _last_date = datetime.datetime.now() + datetime.timedelta(hours=1)
         for i in range(20):
             created_at = _last_date - datetime.timedelta(days=1)
             LastTrade.objects.create(
