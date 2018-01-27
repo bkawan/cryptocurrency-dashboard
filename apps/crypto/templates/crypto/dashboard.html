@@ -52,7 +52,7 @@
                                                 <label for="example-text-input"
                                                        class="col-2 col-form-label">To</label>
                                                 <div class="col-10">
-                                                    <input class="form-control" type="datetime" v-model="endDate"
+                                                    <input class="form-control" type="date" v-model="endDate"
                                                            @change="filterCryptoCurrencies">
                                                 </div>
                                             </div>
@@ -225,25 +225,37 @@
                     if (daterange) {
                         let fromDate = moment(daterange[0]).format("YYYY-MM-DD");
                         let toDate = moment(daterange[1]).format("YYYY-MM-DD");
-                        alert(fromDate)
                         if (event.target.id === 'Last Hour') {
                             this.startDate = moment().subtract(1, 'hours').format('YYYY-MM-DD HH:MM');
                             this.endDate = moment().format('YYYY-MM-DD HH:MM');
                             this.lastHour = true;
                         } else {
-                            this.startDate = fromDate + " 00:00";
-                            this.endDate = toDate + " 23:59";
+                            this.startDate = fromDate;
+                            this.endDate = toDate;
                             this.lastHour = false;
                         }
                     }
                 }
 
                 let url = '/api/crypto-currencies/';
-                let filters = {
-                    bot: this.bot.selected,
-                    created_at_0: this.startDate,
-                    created_at_1: this.endDate,
-                };
+
+
+                let filters = ''
+                if (this.lastHour) {
+                    filters = {
+                        bot: this.bot.selected,
+                        created_at_0: this.startDate,
+                        created_at_1: this.endDate,
+                    };
+                } else {
+                    let sd = this.startDate;
+                    let ed = this.endDate;
+                    filters = {
+                        bot: this.bot.selected,
+                        created_at_0: sd + " 00:00",
+                        created_at_1: ed + " 23:59",
+                    };
+                }
                 axios.get(url, {
                     params: filters
                 })
