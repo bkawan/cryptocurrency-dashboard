@@ -22,11 +22,16 @@
                                     <button class="btn btn-secondary dropdown-toggle" type="button"
                                             id="dropdownMenuButton"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span v-if="lastHour">
+                                        [[startDate|humanDateWithHourMin]] - [[endDate|humanDateWithHourMin]]
+                                        </span>
+                                        <span v-else>
                                         [[startDate|humanDate]] - [[endDate|humanDate]]
+                                        </span>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <a v-for="v,k in ranges"
-                                           :range-key="k"
+                                           :id="k"
                                            @click="filterCryptoCurrencies(v,$event)"
                                            class="dropdown-item"
                                            href="#">
@@ -47,7 +52,7 @@
                                                 <label for="example-text-input"
                                                        class="col-2 col-form-label">To</label>
                                                 <div class="col-10">
-                                                    <input class="form-control" type="date" v-model="endDate"
+                                                    <input class="form-control" type="datetime" v-model="endDate"
                                                            @change="filterCryptoCurrencies">
                                                 </div>
                                             </div>
@@ -166,6 +171,9 @@
     Vue.filter('humanDate', function (value) {
         return moment(value).format('MMM Do YYYY')
     });
+    Vue.filter('humanDateWithHourMin', function (value) {
+        return moment(value).format('MMM Do YYYY HH:MM')
+    });
     Vue.filter('getFirstFromList', function (value) {
         return value[0]
     });
@@ -180,6 +188,7 @@
         data() {
             return {
                 ranges: {
+                    'Last Hour': [moment(), moment()],
                     'Today': [moment(), moment()],
                     'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
                     'Last 7 Days': [moment().subtract(6, 'days'), moment()],
@@ -202,6 +211,7 @@
                 cryptoCurrencies: '',
                 showDatePicker: false,
                 showDateRangeInput: false,
+                lastHour: false,
                 sum:{{ sums }}
 
             }
@@ -213,19 +223,29 @@
             filterCryptoCurrencies(daterange, event) {
                 if (event) {
                     if (daterange) {
-                        this.startDate = moment(daterange[0]).format('YYYY-MM-DD');
-                        this.endDate = moment(daterange[1]).format('YYYY-MM-DD');
+                        let fromDate = moment(daterange[0]).format("YYYY-MM-DD");
+                        let toDate = moment(daterange[1]).format("YYYY-MM-DD");
+                        alert(fromDate)
+                        if (event.target.id === 'Last Hour') {
+                            this.startDate = moment().subtract(1, 'hours').format('YYYY-MM-DD HH:MM');
+                            this.endDate = moment().format('YYYY-MM-DD HH:MM');
+                            this.lastHour = true;
+                        } else {
+                            this.startDate = fromDate + " 00:00";
+                            this.endDate = toDate + " 23:59";
+                            this.lastHour = false;
+                        }
                     }
                 }
 
                 let url = '/api/crypto-currencies/';
-                {#                url = '/api/crypt-currencies/?bot=' + this.bot.selected + "&created_at_0" + start + "&created_at_1=" + end#}
+                let filters = {
+                    bot: this.bot.selected,
+                    created_at_0: this.startDate,
+                    created_at_1: this.endDate,
+                };
                 axios.get(url, {
-                    params: {
-                        bot: this.bot.selected,
-                        created_at_0: moment(this.startDate).format("YYYY-MM-DD"),
-                        created_at_1: moment(this.endDate).format("YYYY-MM-DD"),
-                    }
+                    params: filters
                 })
                     .then(response => {
                             // JSON responses are automatically parsed.
@@ -277,6 +297,7 @@
                                 },
                             };
                             results = response.data;
+                            console.log(results)
                             for (let i = 0; i < results.length; i++) {
                                 let currency = results[i]['currency'].toString().toLowerCase().toString();
                                 let bot = results[i]['bot'].toString().toLowerCase();
