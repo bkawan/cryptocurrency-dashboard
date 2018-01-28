@@ -28,13 +28,14 @@ class Command(BaseCommand):
             _last_date = created_at
 
         _last_date = datetime.datetime.now() + datetime.timedelta(hours=1)
-        for i in range(20):
+        for i in range(200):
             created_at = _last_date - datetime.timedelta(days=1)
             LastTrade.objects.create(
                 info=random.choice(['sell', 'buy']),
                 quantity=random.randint(1, 3),
                 value="{}{}".format(random.choice(["$", "£", "€"]), random.randint(1, 1000)),
                 date=_last_date,
+                bot=random.choice(bots),
                 volume="{}{}".format(random.choice(["$", "£", "€"]), random.randint(1, 1000))
 
             )

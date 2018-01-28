@@ -26,6 +26,7 @@ class CryptoCurrency(models.Model):
 
 class LastTrade(models.Model):
     info = models.CharField(max_length=255)
+    bot = models.CharField(choices=BOT_CHOICES, max_length=10)
     quantity = models.CharField(max_length=255)
     volume = models.CharField(max_length=255)
     value = models.CharField(max_length=255)

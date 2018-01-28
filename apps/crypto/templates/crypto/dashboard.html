@@ -95,7 +95,7 @@
             </div>
             <div class="card">
                 <div class="card-header">
-                    Top Ten Trades
+                    Top Ten Trades for [[bot.selected]]
                 </div>
                 <div class="card-block p-0 m-0 small">
                     <table class="table  table-bordered table-hover">
@@ -109,7 +109,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr class="small" v-for="last_trade in lastTrades">
+                        <tr class="small" v-for="last_trade in lastTrades.slice(0,10)">
                             <td v-if="last_trade.info=='buy'" class="bg-danger p-1 text-center">[[
                                 last_trade.info ]]
                             </td>
@@ -117,8 +117,7 @@
                             <td>[[ last_trade.quantity ]]</td>
                             <td>[[ last_trade.value ]]</td>
                             <td>[[ last_trade.volume ]]</td>
-                            <td>[[ last_trade.year]]/[[last_trade.month]]/[[last_trade.day]]
-                                [[last_trade.hour]]:[[last_trade.minute]]:[[last_trade.second]]
+                            <td>[[last_trade.date|humanDateWithHourMinSec]]
                             </td>
                         </tr>
                         </tbody>
@@ -174,6 +173,9 @@
     Vue.filter('humanDateWithHourMin', function (value) {
         return moment(value).format('MMM Do YYYY HH:MM')
     });
+    Vue.filter('humanDateWithHourMinSec', function (value) {
+        return moment(value).format('MMM Do YYYY HH:MM:SS')
+    });
     Vue.filter('getFirstFromList', function (value) {
         return value[0]
     });
@@ -207,12 +209,13 @@
                 },
                 startDate: moment().subtract(1, 'days').format("YYYY-MM-DD"),
                 endDate: moment().subtract(1, 'days').format("YYYY-MM-DD"),
-                lastTrades:{{ last_trades }},
+                {#                lastTrades:{{ last_trades }},#}
                 cryptoCurrencies: '',
                 showDatePicker: false,
                 showDateRangeInput: false,
                 lastHour: false,
-                sum:{{ sums }}
+                sum: {{ sums }},
+                lastTrades: '',
 
             }
         },
@@ -238,7 +241,7 @@
                 }
 
                 let url = '/api/crypto-currencies/';
-
+                let lastTradeUrl = '/api/last-trades/';
 
                 let filters = ''
                 if (this.lastHour) {
@@ -309,7 +312,7 @@
                                 },
                             };
                             results = response.data;
-                            console.log(results)
+                            {#                            console.log(results)#}
                             for (let i = 0; i < results.length; i++) {
                                 let currency = results[i]['currency'].toString().toLowerCase().toString();
                                 let bot = results[i]['bot'].toString().toLowerCase();
@@ -336,11 +339,19 @@
                             Plotly.newPlot('barChartBot2', cryptoCurrencyOptions.barChart.bot2);
                             Plotly.newPlot('barChartBot3', cryptoCurrencyOptions.barChart.bot3);
 
+                            axios.get(lastTradeUrl, {params: {bot: this.bot.selected}}).then(response => {
+                                this.lastTrades = response.data
+
+                            }).catch(e => {
+
+                                console.log(e)
+                            });
                         }
                     )
                     .catch(e => {
                         console.log(e)
                     })
+
 
             }
         },
