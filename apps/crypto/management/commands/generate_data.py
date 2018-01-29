@@ -13,7 +13,7 @@ class Command(BaseCommand):
         _last_date = datetime.datetime.now() + datetime.timedelta(days=1)
         CryptoCurrency.objects.all().delete()
         LastTrade.objects.all().delete()
-        for i in range(400):
+        for i in range(1000):
             created_at = _last_date - datetime.timedelta(hours=1)
             for bot in bots:
                 for currency in currencies:
